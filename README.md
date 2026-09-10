@@ -73,7 +73,8 @@ make install # install into /Applications
 make dmg     # build/Jellia-<version>.dmg
 ```
 
-Version and build number can be overridden: `make build VERSION=0.1.6 BUILD_NUMBER=42`.
+Version can be overridden with `make build VERSION=0.1.6`; the build number is derived from it
+(`0.1.6` → `10600`) and can be overridden too: `BUILD_NUMBER=10601`.
 A universal binary is produced with `make dmg ARCHS="arm64 x86_64"`.
 The build must pass with `-swift-version 6 -strict-concurrency=complete -warnings-as-errors`.
 

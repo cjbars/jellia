@@ -36,10 +36,11 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.value }}
         run: |
+          # BUILD_NUMBER не задаём: Makefile выводит его из версии, чтобы
+          # релизная и локальная сборки одной версии не расходились.
           make dmg \
             ARCHS="arm64 x86_64" \
             VERSION="$VERSION" \
-            BUILD_NUMBER="$GITHUB_RUN_NUMBER" \
             CODE_SIGN_IDENTITY=-
           lipo -info "build/Jellia.app/Contents/MacOS/Jellia"
 
@@ -63,7 +64,15 @@ jobs:
             echo 'xattr -dr com.apple.quarantine /Applications/Jellia.app'
             echo '```'
           } > build/release-notes.md
-          gh release create "$GITHUB_REF_NAME" \
-            "build/Jellia-$VERSION.dmg" \
-            --title "Jellia $VERSION" \
-            --notes-file build/release-notes.md
+          # Перевыпуск того же тега обновляет существующий релиз, а не падает.
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "build/Jellia-$VERSION.dmg" --clobber
+            gh release edit "$GITHUB_REF_NAME" \
+              --title "Jellia $VERSION" \
+              --notes-file build/release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              "build/Jellia-$VERSION.dmg" \
+              --title "Jellia $VERSION" \
+              --notes-file build/release-notes.md
+          fi

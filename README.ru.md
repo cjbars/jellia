@@ -74,7 +74,8 @@ make install # установить в /Applications
 make dmg     # build/Jellia-<версия>.dmg
 ```
 
-Версия и номер сборки переопределяются: `make build VERSION=0.1.6 BUILD_NUMBER=42`.
+Версия переопределяется через `make build VERSION=0.1.6`; номер сборки выводится из неё
+(`0.1.6` → `10600`) и тоже переопределяется: `BUILD_NUMBER=10601`.
 Универсальный бинарник собирается так: `make dmg ARCHS="arm64 x86_64"`.
 Сборка обязана проходить со `-swift-version 6 -strict-concurrency=complete -warnings-as-errors`.
 

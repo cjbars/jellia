@@ -14,7 +14,10 @@ APP_RESOURCES := \
 	Resources/Jellia.icns
 
 VERSION ?= 0.1.5
-BUILD_NUMBER ?= $(shell git rev-list --count HEAD 2>/dev/null || echo 1)
+# Номер сборки выводится из версии: 0.1.5 → 10500, 0.2.0 → 20000, 1.0.0 → 1000000.
+# Так номер монотонно растёт вместе с версией и совпадает у локальной и релизной сборки.
+# Для пересборки той же версии оставлен зазор: BUILD_NUMBER=10501.
+BUILD_NUMBER ?= $(shell echo "$(VERSION)" | awk -F. '{printf "%d", ($$1*1000000)+($$2*10000)+($$3*100)}')
 ARCH ?= $(shell uname -m)
 # Список архитектур приложения: локально — своя, в релизе — «arm64 x86_64».
 ARCHS ?= $(ARCH)
