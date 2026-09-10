@@ -5,6 +5,8 @@
 A native music client for [Jellyfin](https://jellyfin.org) on macOS. SwiftUI, no Electron and no
 web views: library, player and search are a regular Mac app.
 
+[jellia website](https://cjbars.github.io/jellia/) · [latest release](https://github.com/cjbars/jellia/releases/latest)
+
 ## Features
 
 - library browsing: artists, albums, playlists and favorites with artwork;

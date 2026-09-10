@@ -5,6 +5,8 @@
 Нативный музыкальный клиент [Jellyfin](https://jellyfin.org) для macOS. SwiftUI, без Electron
 и без веб-вью: библиотека, плеер и поиск — обычное приложение macOS.
 
+[сайт Jellia](https://cjbars.github.io/jellia/?lang=ru) · [последний релиз](https://github.com/cjbars/jellia/releases/latest)
+
 ## Возможности
 
 - библиотека: артисты, альбомы, плейлисты и избранное с обложками;
