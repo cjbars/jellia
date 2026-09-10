@@ -7,6 +7,12 @@ web views: library, player and search are a regular Mac app.
 
 [jellia website](https://cjbars.github.io/jellia/) · [latest release](https://github.com/cjbars/jellia/releases/latest)
 
+![Library with playlists and the playback queue](screenshots/library.png)
+
+![Artist page with top tracks and albums](screenshots/artist.png)
+
+<sub>Interface mockups — the album artwork is placeholder imagery, not a real library.</sub>
+
 ## Features
 
 - library browsing: artists, albums, playlists and favorites with artwork;
