@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071127"/>
+      <stop offset="0.5" stop-color="#093a78"/>
+      <stop offset="1" stop-color="#071638"/>
+    </linearGradient>
+    <radialGradient id="light" cx="50%" cy="8%" r="86%">
+      <stop offset="0" stop-color="#45efff" stop-opacity="0.9"/>
+      <stop offset="0.34" stop-color="#149bd3" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#071638" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b596ff"/>
+      <stop offset="0.46" stop-color="#dffcff"/>
+      <stop offset="1" stop-color="#4ef4ec"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <clipPath id="shape">
+      <rect x="64" y="64" width="896" height="896" rx="210"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#shape)">
+    <rect x="64" y="64" width="896" height="896" fill="url(#background)"/>
+    <rect x="64" y="64" width="896" height="896" fill="url(#light)"/>
+    <ellipse cx="512" cy="260" rx="330" ry="210" fill="#62efff" opacity="0.08"/>
+
+    <path d="M128 570
+             C220 625 286 446 390 503
+             C452 537 449 621 505 588
+             C557 557 514 467 523 359
+             C531 260 640 266 645 352
+             C651 439 542 464 536 547
+             C530 626 586 661 627 590
+             C704 456 790 492 896 565"
+          fill="none" stroke="#42dff8" stroke-width="58" stroke-linecap="round"
+          stroke-linejoin="round" opacity="0.36" filter="url(#shadow)"/>
+    <path d="M128 570
+             C220 625 286 446 390 503
+             C452 537 449 621 505 588
+             C557 557 514 467 523 359
+             C531 260 640 266 645 352
+             C651 439 542 464 536 547
+             C530 626 586 661 627 590
+             C704 456 790 492 896 565"
+          fill="none" stroke="url(#wave)" stroke-width="22" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M134 563
+             C222 610 288 457 386 510
+             C446 542 452 611 501 582
+             C545 556 508 466 517 357
+             C526 249 650 256 652 351"
+          fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"
+          opacity="0.68"/>
+
+    <rect x="75" y="75" width="874" height="874" rx="199"
+          fill="none" stroke="#a7f6ff" stroke-width="3" opacity="0.18"/>
+  </g>
+</svg>

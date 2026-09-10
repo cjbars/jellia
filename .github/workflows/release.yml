@@ -1,0 +1,69 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Версия для пробной сборки, например 0.1.6'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  dmg:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Определить версию
+        id: version
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            version="${{ inputs.version }}"
+          else
+            version="${GITHUB_REF_NAME#v}"
+          fi
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+          echo "Версия сборки: $version"
+
+      - name: Проверка типов и тесты
+        run: make check
+
+      - name: Сборка универсального образа
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          make dmg \
+            ARCHS="arm64 x86_64" \
+            VERSION="$VERSION" \
+            BUILD_NUMBER="$GITHUB_RUN_NUMBER" \
+            CODE_SIGN_IDENTITY=-
+          lipo -info "build/Jellia.app/Contents/MacOS/Jellia"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Jellia-${{ steps.version.outputs.value }}-dmg
+          path: build/Jellia-${{ steps.version.outputs.value }}.dmg
+
+      - name: Публикация релиза
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          {
+            echo 'Универсальная сборка (Apple Silicon и Intel), macOS 26 и новее.'
+            echo
+            echo 'Образ не подписан сертификатом Apple Developer ID, поэтому после установки снимите карантин:'
+            echo
+            echo '```bash'
+            echo 'xattr -dr com.apple.quarantine /Applications/Jellia.app'
+            echo '```'
+          } > build/release-notes.md
+          gh release create "$GITHUB_REF_NAME" \
+            "build/Jellia-$VERSION.dmg" \
+            --title "Jellia $VERSION" \
+            --notes-file build/release-notes.md

@@ -1,0 +1,21 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Версии инструментов
+        run: |
+          swift --version
+          xcodebuild -version
+
+      - name: Проверка типов и тесты
+        run: make check
