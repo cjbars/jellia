@@ -16,7 +16,7 @@ jobs:
   dmg:
     runs-on: macos-26
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Определить версию
         id: version
@@ -43,7 +43,7 @@ jobs:
             CODE_SIGN_IDENTITY=-
           lipo -info "build/Jellia.app/Contents/MacOS/Jellia"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Jellia-${{ steps.version.outputs.value }}-dmg
           path: build/Jellia-${{ steps.version.outputs.value }}.dmg
