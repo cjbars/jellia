@@ -1,0 +1,17 @@
+version: 2
+
+# Кода-зависимостей у проекта нет (Swift собирается без SPM), поэтому следим
+# только за версиями GitHub Actions: они устаревают молча.
+#
+# Важно: main на GitHub — снимок из приватного репозитория, и его перезаписывает
+# Scripts/publish.sh. Pull request от Dependabot здесь — уведомление о новой версии:
+# правку нужно внести в workflow в приватном репозитории, откуда она приедет снимком.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: 'ci'
+    labels:
+      - dependencies
