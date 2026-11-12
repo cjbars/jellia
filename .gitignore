@@ -1,6 +1,5 @@
 # Project-specific
 /build/
-/.codebase-memory/
 /DerivedData/
 /Jellia.xcodeproj/
 /jellia-app-icon.png

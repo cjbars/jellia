@@ -6,34 +6,7 @@ struct QueuePanelView: View {
     @State private var draggedQueueIndex: Int?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            HStack {
-                Text("\(appState.queue.count) tracks")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Button {
-                    appState.shuffleQueue()
-                } label: {
-                    Image(systemName: AppIcon.shuffle)
-                        .frame(width: 24, height: 24)
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
-                .disabled(appState.queue.count < 2)
-                .help("Shuffle queue")
-
-                Button {
-                    appState.clearQueue()
-                } label: {
-                    Image(systemName: AppIcon.remove)
-                        .frame(width: 24, height: 24)
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
-                .disabled(appState.queue.isEmpty && !appState.isPlaying)
-                .help("Clear queue")
-            }
-
+        Group {
             if appState.queue.isEmpty {
                 VStack(spacing: AppSpacing.sm) {
                     Image(systemName: AppIcon.queue)
@@ -45,32 +18,70 @@ struct QueuePanelView: View {
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
+                .padding(.horizontal, AppSpacing.panel)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
+                // Отступ внутри прокрутки: ScrollView во всю ширину панели,
+                // и накладная полоса прокрутки не ложится на кнопку удаления.
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                    ForEach(Array(appState.queue.enumerated()), id: \.offset) { index, track in
-                        QueueTrackRow(
-                            track: track,
-                            index: index,
-                            appState: appState,
-                            draggedQueueIndex: $draggedQueueIndex
-                        )
+                        ForEach(Array(appState.queue.enumerated()), id: \.offset) { index, track in
+                            QueueTrackRow(
+                                track: track,
+                                index: index,
+                                appState: appState,
+                                draggedQueueIndex: $draggedQueueIndex
+                            )
+                        }
                     }
-                    }
+                    .padding(.horizontal, AppSpacing.panel)
                 }
             }
         }
-        .padding(.horizontal, AppSpacing.panel)
         .padding(.top, AppSpacing.sm)
         .padding(.bottom, AppSpacing.panel)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .ignoresSafeArea(.container, edges: .top)
         .background {
+            // Без скругления: панель занимает всю колонку инспектора,
+            // скруглённые углы открывали серый фон колонки слева сверху и снизу.
             Color.clear
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: AppRadius.large, style: .continuous))
+                .glassEffect(.regular, in: Rectangle())
                 .allowsHitTesting(false)
                 .ignoresSafeArea(.container, edges: .top)
+        }
+        // Шапка очереди живёт в тулбаре над инспектором: в зоне тулбара
+        // обычный контент размывается эффектом края ScrollView и не получает кликов.
+        // Свёрнутый инспектор остаётся в иерархии, и без условия его кнопки
+        // переезжают в общий тулбар окна.
+        .toolbar {
+            if appState.isQueueVisible {
+                ToolbarItem {
+                    Text("\(appState.queue.count) tracks")
+                        .foregroundStyle(.secondary)
+                        .fixedSize()
+                }
+                .sharedBackgroundVisibility(.hidden)
+
+                ToolbarSpacer(.flexible)
+
+                ToolbarItemGroup {
+                    Button {
+                        appState.shuffleQueue()
+                    } label: {
+                        Label("Shuffle queue", systemImage: AppIcon.shuffle)
+                    }
+                    .disabled(appState.queue.count < 2)
+                    .help("Shuffle queue")
+
+                    Button {
+                        appState.clearQueue()
+                    } label: {
+                        Label("Clear queue", systemImage: AppIcon.remove)
+                    }
+                    .disabled(appState.queue.isEmpty && !appState.isPlaying)
+                    .help("Clear queue")
+                }
+            }
         }
     }
 }

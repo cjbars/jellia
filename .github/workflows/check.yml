@@ -6,6 +6,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+# В настройках репозитория токену по умолчанию разрешена запись (нужно release),
+# проверке хватает чтения.
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: macos-26
